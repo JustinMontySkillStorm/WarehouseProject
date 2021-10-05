@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const { Company } = require('../model/Company.js');
-const { findParentOrg, findChildOrg } = require('../controllers/find-companies');
-const mongoFactory = require('../helper/db-factory.js');
+const { Company } = require('../../model/Company.js');
+const { findParentOrg, findChildOrg } = require('../../controllers/company/find-companies.js');
+const mongoFactory = require('../../helper/db-factory.js');
 require('dotenv').config();
 
 const mongoDB = mongoFactory(process.env.MONGO_URI);

@@ -1,4 +1,4 @@
-const { Company } = require('../model/Company');
+const { Company } = require('../../model/Company');
 require('dotenv').config();
 
 
@@ -21,7 +21,7 @@ const findParentOrg = async (name) => {
  * @param {String} childName 
  * @returns the childOrg wrapped in a promise
  */
-const findChildOrg = async ({ childName }) => {
+const findChildOrg = async ({childName}) => {
     try{
         console.log(childName);
         const childOrg = await Company.findOne({"childCompanies.name": childName});

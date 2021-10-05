@@ -1,4 +1,4 @@
-const { findChildOrg } = require('../../controllers/find-companies.js');
+const { findChildOrg } = require('../../controllers/company/find-companies.js');
 const router = require('express').Router();
 const mongoFactory  = require('../../helper/db-factory.js');
 

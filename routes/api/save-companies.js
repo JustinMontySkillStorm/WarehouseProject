@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { resolve } = require('path');
-const { addChildCompany, createParentCompany } = require('../../controllers/save-companies.js');
+const { addChildCompany, createParentCompany } = require('../../controllers/company/save-companies.js');
 
 router.post('/api/save/child', async (req, res) => {
     try {
@@ -24,7 +24,7 @@ router.post('/api/save/parent', async (req,res) => {
     }
 })
 
-router.post('/api/addStorage', (req,res) => {
+router.post('/api/save/storage', (req,res) => {
     // request needs to have which childCompany to add warehouse to.  
     // create warehouse 
     // save warehouse to its collection. keep _id 
@@ -32,7 +32,7 @@ router.post('/api/addStorage', (req,res) => {
     // add warehouse._id to childCompany storage
 })
 
-router.post('/api/addInventory', (req, res) => {
+router.post('/api/save/inventory', (req, res) => {
     // find correct warehouse.  
     // build the item and push it into the warehouse's inventory array. 
 })

@@ -17,6 +17,12 @@ app.get('/', (req,res) => {
 // getter to hopefully return just the childOrg object. 
 app.get('/:childName', require('./routes/getters/get-child-org.js'));
 
+// post request to add warehouse to a child org
+app.post('/api/save/storage', require('./routes/api/save-warehouses.js'));
+
+// post request to add items to a warehouse 
+app.post('/api/save/inventory', require('./routes/api/save-warehouses.js'));
+
 // post request for adding a parent company to our companies collection.
 app.post('/api/save/parent', require('./routes/api/save-companies.js'));
 

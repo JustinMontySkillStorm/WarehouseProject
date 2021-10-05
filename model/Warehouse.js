@@ -22,7 +22,7 @@ const WarehouseSchema = new Schema({
             price: Number,
         }],
         validate: {
-            validator: () => this.inventory === maxFloorSpace
+            validator: () => this.inventory === this.maxFloorSpace
         },
         message: 'Cannot exceed maxFloorSpace available in this warehouse',
     }
