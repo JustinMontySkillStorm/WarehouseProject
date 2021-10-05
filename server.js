@@ -14,7 +14,15 @@ app.get('/', (req,res) => {
     res.send('Hello');
 })
 
-app.post('/api/savechild', require('./routes/api/save-child.js'));
+// getter to hopefully return just the childOrg object. 
+app.get('/:childName', require('./routes/getters/get-child-org.js'));
+
+// post request for adding a parent company to our companies collection.
+app.post('/api/save/parent', require('./routes/api/save-companies.js'));
+
+// post request for adding a child company to the parent company.childCompanies array
+app.post('/api/save/child', require('./routes/api/save-companies.js'));
+
 
 app.listen(port, ()=> {
     console.log(`Server listening on port ${port}`);
