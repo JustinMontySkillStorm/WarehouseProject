@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const {resolve} = require('path');
-const { addWarehouse } = require('../../controllers/warehouse/save-warehouses.js');
+const { addWarehouse, addInventory } = require('../../controllers/warehouse/save-warehouses.js');
 
 
+// post route to listen to when we are trying to add a warehouse to a child company.
 router.post('/api/save/storage', async (req,res) => {
     try {
         const dbFeedback = await addWarehouse(req.body);
@@ -15,10 +16,18 @@ router.post('/api/save/storage', async (req,res) => {
     
 })
 
-router.post('/api/save/inventory', (req, res) => {
-    // find correct warehouse.  
-    // build the item and push it into the warehouse's inventory array. 
+// post route to listen to when we are trying to save an item to a warehouse.
+router.post('/api/save/inventory', async (req, res) => {
+    try {
+        // find correct warehouse.  
+        // build the item and push it into the warehouse's inventory array. 
+        const dbFeedback = await addInventory(req.body);
+        console.log(dbFeedback);
+        res.status(201).json(dbFeedback);
+    } catch(err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
 })
-
 
 module.exports = router;

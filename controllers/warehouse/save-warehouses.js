@@ -50,15 +50,30 @@ const addWarehouse = async ({ owner, warehouse: {locationStr: location, typeOfIt
 
 
 /**
+ * adds a single item into the warehouse. 
  * 
- * @param {Object} req.body
+ * @param {Object} req.body passes in the request body and we destructure it to create an item and then add it to our database
+ * @returns a warehouse that matches the locationStr passed in from the requestbody
  */
-const addInventory = () => {
+const addInventory = async ({locationStr: location, itemName: item, briefDescription: desc, price, quantity}) => {
+    try {
+
+    } catch(err) {
+        console.log(err);
+
+    }
+    mongoDB.connect();
+    const warehouse = await Warehouse.findOne({locationStr: location});
+    warehouse.inventory.push({itemName: item, briefDescription: desc, price, quantity});
+    await warehouse.save();
+    // console.log(warehouse);
+    // console.log(item, desc, price, quantity);
 
 }
 
 module.exports = {
-    addWarehouse,   
+    addWarehouse,  
+    addInventory, 
 }
 
 
