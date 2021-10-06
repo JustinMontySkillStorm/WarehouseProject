@@ -15,10 +15,12 @@ const mongoDB = mongoFactory(process.env.MONGO_URI);
  * @param req.body destructuring req.body.  taking the name and the rest of the data
  * will be array of objects of the child companies 
  */
-const addChildCompany = async ({name, child: {cName, businessSector}}) => {
+const addChildCompany = async ({pName, child: {cName, businessSector}}) => {
     try {
+        // needed to add this hack here because I was destructure alson in findParentOrg method.
+        let parentObj = {pName: pName};
         await mongoDB.connect();
-        const parentOrg = await findParentOrg(name);
+        const parentOrg = await findParentOrg(parentObj);
         parentOrg.childCompanies.push({name: cName, businessSector});
         await parentOrg.save();
         mongoDB.disconnect();
@@ -36,18 +38,18 @@ const addChildCompany = async ({name, child: {cName, businessSector}}) => {
  * @param {String} name of the parent company we would like to add to our database  
  * @returns an object with an HTTP status code and a message.
  */
-const createParentCompany = async({name}) => {
+const createParentCompany = async({ pName }) => {
     try {
         await mongoDB.connect();
-        console.log(name);
-        const parentCompany = new Company({ name: name });
+        console.log(pName);
+        const parentCompany = new Company({ name: pName });
         await parentCompany.save();
         mongoDB.disconnect();
-        return {status: 201, message: `Created parent company with a name of ${name}`};
+        return {status: 201, message: `Created parent company with a name of ${pName}`};
     } catch(err) {
         console.log(err);
         mongoDB.disconnect();
-        return {status: 500, message: `Unable to add parent company with a name of ${name}`};
+        return {status: 500, message: `Unable to add parent company with a name of ${pName}`};
     }
 }
 

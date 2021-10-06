@@ -8,12 +8,14 @@ require('dotenv').config();
  * @param {String} name of the parent organization we are trying to find
  * @returns parentOrganization wrapped in a Promise
  */
-const findParentOrg = async (name) => {
+const findParentOrg = async ({pName}) => {
     try {
-        const parentOrg = await Company.findOne({name: name})
+        // console.log(pName);
+        const parentOrg = await Company.findOne({name: pName})
+        console.log(parentOrg);
         return parentOrg;
     } catch(err) {
-        throw err;
+        return {status: 404, message: `The parent organization with the name of ${pName} cannot be found in our database.`};
     }
 }
 
@@ -23,13 +25,13 @@ const findParentOrg = async (name) => {
  * @param {String} childName 
  * @returns the childOrg wrapped in a promise
  */
-const findChildOrg = async ({childName}) => {
+const findChildOrg = async ({ childName }) => {
     try{
         console.log(childName);
         const childOrg = await Company.findOne({"childCompanies.name": childName});
         return childOrg;
     } catch(err) {
-        throw err;
+        return{status: 404, message: `We cannot locate the child organization with the name of ${name} in our database`};
     }
 }
 
