@@ -14,8 +14,11 @@ app.get('/', (req,res) => {
     res.send('Hello');
 })
 
-// getter to hopefully return just the childOrg object. 
-app.get('/:childName', require('./routes/getters/get-child-org.js'));
+// doesn't work how I thought it would maybe delete later. 
+app.get('/child/:childName', require('./routes/getters/get-org.js'));
+
+// getter to grab a specific parent organization
+app.get('/parent/:pName', require('./routes/getters/get-org.js'));
 
 // post request to add warehouse to a child org
 app.post('/api/save/storage', require('./routes/api/save-warehouses.js'));

@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const { cpSync, copyFileSync } = require('fs');
 const {resolve} = require('path');
 const { addWarehouse, addInventory } = require('../../controllers/warehouse/save-warehouses.js');
 

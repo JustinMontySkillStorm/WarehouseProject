@@ -4,8 +4,9 @@ const { addChildCompany, createParentCompany } = require('../../controllers/comp
 
 router.post('/api/save/child', async (req, res) => {
     try {
+        console.log(req.body)
         const dbFeedback = await addChildCompany(req.body);
-        console.log(dbFeedback);
+        // console.log(dbFeedback);
         res.json(dbFeedback);
     } catch (err) {
         res.status(500).json(err);
