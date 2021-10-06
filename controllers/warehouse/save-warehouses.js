@@ -15,30 +15,30 @@ const mongoDB = mongoFactory(process.env.MONGO_URI);
  * @returns  an object with a success code and message or a reject object with a status code and message
  */
 const addWarehouse = async ({ owner, warehouse: {locationStr: location, typeOfItems: items, maxFloorSpace: floorSpace} }) => {
+    // request needs to have which childCompany to add warehouse to.  
     try {
         mongoDB.connect();
-        // request needs to have which childCompany to add warehouse to.  
-        console.log(location, items, floorSpace);
+        // find childCompany. 
+        const cc = await findChildOrg({childName: owner});
+        console.log("CC object", cc);
+
+        
         // create warehouse 
-        const warehouse = new Warehouse({locationStr: location, typeOfItems: items, maxFloorSpace: floorSpace})
+        const warehouse = new Warehouse({ownerOfWarehouse: cc._id,locationStr: location, typeOfItems: items, maxFloorSpace: floorSpace})
         const id = new mongoose.Types.ObjectId();
     
         // save warehouse to its collection. keep _id 
         warehouse._id = id;
         console.log(warehouse._id);
-        await warehouse.save();
-        // find childCompany. 
-        const doc = await findChildOrg({childName: owner});
-        // add warehouse._id to correct childCompany storage
         let childCompanyName = null;
-        doc.childCompanies.forEach(obj => {
-            if(obj.name === owner) {
-                obj.storage.push(id);
-                childCompanyName = obj.name;
-            }
-        })
+
+        // add warehouse._id to correct childCompany storage
+        cc.storage.push(id);
+        childCompanyName = cc.name;
+
         // save the document and return 201
-        await doc.save();
+        await warehouse.save();
+        await cc.save();
         mongoDB.disconnect();
         return {status: 201, message: `Successfully added a new warehouse to ${childCompanyName}` }
     } catch(err) {

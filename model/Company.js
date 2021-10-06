@@ -6,21 +6,28 @@ const WarehouseSchema = require('./Warehouse.js');
  * referencing my WarehouseSchema here to make my db schema a little bit more readable.  
  * going to populate my
  */
-const CompanySchema = new Schema({
+const ParentCompanySchema = new Schema({
     name: String, 
-    childCompanies: [{
+    childCompanies: [{type: Schema.Types.ObjectID, ref: 'ChildCompany'}]
+})
+
+const ChildCompanySchema = new Schema({
+        parentID: {
+            type: Schema.Types.ObjectID, ref: "ParentCompany"
+        },
         name: String,
         businessSector: String,
         storage: [{type: Schema.Types.ObjectID, ref: "Warehouse"}] 
-    }]
 })
 
 
-const Company = mongoose.model('Company', CompanySchema, 'companies');
+const ParentCompany = mongoose.model('ParentCompany', ParentCompanySchema, 'parent-company');
+const ChildCompany = mongoose.model('ChildCompany', ChildCompanySchema, 'child-company');
 const Warehouse = mongoose.model('Warehouse', WarehouseSchema, 'warehouses');
 
 module.exports = {
-    Company,
+    ParentCompany,
+    ChildCompany,
     Warehouse,
 }
 
