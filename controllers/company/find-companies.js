@@ -1,4 +1,4 @@
-const { Company } = require('../../model/Company');
+const { ParentCompany, ChildCompany } = require('../../model/Company');
 require('dotenv').config();
 
 
@@ -11,8 +11,7 @@ require('dotenv').config();
 const findParentOrg = async ({pName}) => {
     try {
         // console.log(pName);
-        const parentOrg = await Company.findOne({name: pName})
-        console.log(parentOrg);
+        const parentOrg = await ParentCompany.findOne({name: pName})
         return parentOrg;
     } catch(err) {
         return {status: 404, message: `The parent organization with the name of ${pName} cannot be found in our database.`};
@@ -27,11 +26,10 @@ const findParentOrg = async ({pName}) => {
  */
 const findChildOrg = async ({ childName }) => {
     try{
-        console.log(childName);
-        const childOrg = await Company.findOne({"childCompanies.name": childName});
+        const childOrg = await ChildCompany.findOne({"name": childName});
         return childOrg;
     } catch(err) {
-        return{status: 404, message: `We cannot locate the child organization with the name of ${name} in our database`};
+        return{status: 404, message: `We cannot locate the child organization with the name of ${childName} in our database`};
     }
 }
 

@@ -20,6 +20,9 @@ app.get('/child/:childName', require('./routes/getters/get-org.js'));
 // getter to grab a specific parent organization
 app.get('/parent/:pName', require('./routes/getters/get-org.js'));
 
+// getter to grab the warehouses along with their owners.  
+app.get('/warehouses', require('./routes/getters/get-warehouse.js'));
+
 // post request to add warehouse to a child org
 app.post('/api/save/storage', require('./routes/api/save-warehouses.js'));
 

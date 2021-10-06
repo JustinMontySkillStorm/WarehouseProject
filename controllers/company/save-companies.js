@@ -1,4 +1,5 @@
-const { Company } = require('../../model/Company.js');
+const { ParentCompany, ChildCompany } = require('../../model/Company.js');
+const mongoose = require('mongoose');
 const { findParentOrg, findChildOrg } = require('../../controllers/company/find-companies.js');
 const mongoFactory = require('../../helper/db-factory.js');
 require('dotenv').config();
@@ -18,12 +19,20 @@ const mongoDB = mongoFactory(process.env.MONGO_URI);
 const addChildCompany = async ({pName, child: {cName, businessSector}}) => {
     try {
         // needed to add this hack here because I was destructure alson in findParentOrg method.
-        let parentObj = {pName: pName};
         await mongoDB.connect();
+        let parentObj = {pName: pName};
+
         const parentOrg = await findParentOrg(parentObj);
-        parentOrg.childCompanies.push({name: cName, businessSector});
+        const childCompany = new ChildCompany({parentID: parentOrg._id, name: cName, businessSector: businessSector});
+
+        console.log(parentOrg);
+        childCompany._id = new mongoose.Types.ObjectId();
+        parentOrg.childCompanies.push(childCompany._id);
+
+        await childCompany.save();
         await parentOrg.save();
         mongoDB.disconnect();
+
         return { status: 201, message: `Successfull added child company with name of ${cName}` };
     } catch(err) {
         console.log(err);
@@ -42,7 +51,7 @@ const createParentCompany = async({ pName }) => {
     try {
         await mongoDB.connect();
         console.log(pName);
-        const parentCompany = new Company({ name: pName });
+        const parentCompany = new ParentCompany({ name: pName });
         await parentCompany.save();
         mongoDB.disconnect();
         return {status: 201, message: `Created parent company with a name of ${pName}`};
