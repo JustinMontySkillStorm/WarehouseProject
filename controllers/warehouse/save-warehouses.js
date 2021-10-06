@@ -57,18 +57,17 @@ const addWarehouse = async ({ owner, warehouse: {locationStr: location, typeOfIt
  */
 const addInventory = async ({locationStr: location, itemName: item, briefDescription: desc, price, quantity}) => {
     try {
-
+        mongoDB.connect();
+        const warehouse = await Warehouse.findOne({locationStr: location});
+        warehouse.inventory.push({itemName: item, briefDescription: desc, price, quantity});
+        console.log(warehouse.inventory)
+        await warehouse.save();
+        mongoDB.disconnect();
+        return {status: 201, message: `Successfully added ${item} into warehoues located in ${location}`};
     } catch(err) {
-        console.log(err);
-
+        mongoDB.disconnect();
+        throw {status: 500, message: `Could not add your item because it would exceed maxFloorSpace avaiable in warehouse`};
     }
-    mongoDB.connect();
-    const warehouse = await Warehouse.findOne({locationStr: location});
-    warehouse.inventory.push({itemName: item, briefDescription: desc, price, quantity});
-    await warehouse.save();
-    // console.log(warehouse);
-    // console.log(item, desc, price, quantity);
-
 }
 
 module.exports = {

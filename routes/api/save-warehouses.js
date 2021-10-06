@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { cpSync, copyFileSync } = require('fs');
 const {resolve} = require('path');
 const { addWarehouse, addInventory } = require('../../controllers/warehouse/save-warehouses.js');
 
@@ -25,7 +26,11 @@ router.post('/api/save/inventory', async (req, res) => {
         console.log(dbFeedback);
         res.status(201).json(dbFeedback);
     } catch(err) {
-        console.log(err);
+        /**
+         * custom error object with 
+         * status of 500 
+         * and a message detailing that we can't add ite, because inventory is full. 
+         */
         res.status(500).json(err);
     }
 })
