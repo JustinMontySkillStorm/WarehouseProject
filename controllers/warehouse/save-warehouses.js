@@ -1,7 +1,6 @@
 const mongoFactory = require('../../helper/db-factory');
 const mongoose = require('mongoose');
-const { Warehouse } = require('../../model/Company.js');
-const { findChildOrg } = require('../company/find-companies');
+const { Warehouse, ChildCompany } = require('../../model/Company.js')
 require('dotenv').config();
 
 
@@ -17,9 +16,10 @@ const mongoDB = mongoFactory(process.env.MONGO_URI);
 const addWarehouse = async ({ owner, warehouse: {locationStr: location, typeOfItems: items, maxFloorSpace: floorSpace} }) => {
     // request needs to have which childCompany to add warehouse to.  
     try {
-        mongoDB.connect();
+        await mongoDB.connect();
         // find childCompany. 
-        const cc = await findChildOrg({childName: owner});
+        const cc = await ChildCompany.findOne({name: owner});
+        console.log(cc)
         console.log("CC object", cc);
 
         
@@ -42,9 +42,9 @@ const addWarehouse = async ({ owner, warehouse: {locationStr: location, typeOfIt
         mongoDB.disconnect();
         return {status: 201, message: `Successfully added a new warehouse to ${childCompanyName}` }
     } catch(err) {
-        console.log(err);
+        console.log("error properties", err.errors);
         mongoose.disconnect();
-        return {status: 500, message: `Could not add warehouse to ${childCompanyName}`};
+        return {status: 500, message: `Could not add warehouse to our database because of an error.`};
     }
 } 
 
@@ -57,7 +57,7 @@ const addWarehouse = async ({ owner, warehouse: {locationStr: location, typeOfIt
  */
 const addInventory = async ({locationStr: location, itemName: item, briefDescription: desc, price, quantity}) => {
     try {
-        mongoDB.connect();
+        await mongoDB.connect();
         const warehouse = await Warehouse.findOne({locationStr: location});
         warehouse.inventory.push({itemName: item, briefDescription: desc, price, quantity});
         console.log(warehouse.inventory)

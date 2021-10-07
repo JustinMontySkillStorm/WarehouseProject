@@ -6,6 +6,7 @@ const { addWarehouse, addInventory } = require('../../controllers/warehouse/save
 // post route to listen to when we are trying to add a warehouse to a child company.
 router.post('/api/save/storage', async (req,res) => {
     try {
+        console.log(req.body);
         const dbFeedback = await addWarehouse(req.body);
         console.log(dbFeedback);
         res.status(201).json(dbFeedback);
@@ -20,7 +21,7 @@ router.post('/api/save/storage', async (req,res) => {
 router.post('/api/save/inventory', async (req, res) => {
     try {
         // find correct warehouse.  
-        // build the item and push it into the warehouse's inventory array. 
+        // build the item and push it into the warehouse's inventory array.
         const dbFeedback = await addInventory(req.body);
         console.log(dbFeedback);
         res.status(201).json(dbFeedback);

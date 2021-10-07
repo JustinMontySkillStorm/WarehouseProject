@@ -1,22 +1,17 @@
-const { findChildOrg, findParentOrg } = require('../../controllers/company/find-companies.js');
+const {ParentCompany, ChildCompany} = require('../../model/Company.js');
 const router = require('express').Router();
 const mongoFactory  = require('../../helper/db-factory.js');
 
 const mongoDB = mongoFactory(process.env.MONGO_URI);
 
-// not sure I'll need this as a route maybe just findChildOrg as a helper to add a warehouse and push to that organization.
+// gets a child company with the provided name from req.params.  
 router.get('/child/:childName', async (req, res) => {
     try {
-        /**
-         * doesn't work how I thought it would.
-         * I thought it would grab just the child object and return it
-         * grabs the whole document though no big deal.
-         */
-        mongoDB.connect();
+        await mongoDB.connect();
         console.log(req.params);
-        const childCompany = await findChildOrg(req.params);
-        mongoDB.disconnect();
+        const childCompany = await ChildCompany.findOne({"name": req.params.childName});
         res.status(200).json(childCompany);
+        mongoDB.disconnect();
     } catch(err) {
         console.log(err);
         mongoDB.disconnect();
@@ -26,11 +21,11 @@ router.get('/child/:childName', async (req, res) => {
 
 router.get('/parent/:pName', async(req, res)=> {
     try {
-        mongoDB.connect();
+        await mongoDB.connect();
         console.log(req.params);
-        const parentOrg = await findParentOrg(req.params);
-        mongoDB.disconnect();
+        const parentOrg = await ParentCompany.findOne({"name": req.params.pName});
         res.status(200).json(parentOrg);
+        mongoDB.disconnect();
     } catch(err) {
         console.log(err);
         mongoDB.disconnect();
