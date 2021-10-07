@@ -58,13 +58,13 @@ app.put('/api/parent/:parentName', require('./routes/api/update/update-orgs.js')
 // update the childOrg name
 app.put('/api/child/:childName', require('./routes/api/update/update-orgs.js'));
 
-// update warehouse business sector
-
 // update maxFloorSpace in warehouse
+app.put('/api/warehouse/updateSpace/:location', require('./routes/api/update/update-warehouses.js'));
 
-// update quantity of item in ware
-
-// update item price
+// update quantity of item in warehouse
+// update item price in warehouse
+// update item name in warehouse
+app.put('/api/warehouse/updateInventory/:location/:itemName', require('./routes/api/update/update-warehouses.js'));
 
 
 /**
