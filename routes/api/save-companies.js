@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { resolve } = require('path');
 const { addChildCompany, createParentCompany } = require('../../controllers/company/save-companies.js');
 
-router.post('/api/save/child', async (req, res) => {
+router.post('/api/child', async (req, res) => {
     try {
         const dbFeedback = await addChildCompany(req.body);
         // console.log(dbFeedback);
@@ -13,7 +13,7 @@ router.post('/api/save/child', async (req, res) => {
     
 })
 
-router.post('/api/save/parent', async (req,res) => {
+router.post('/api/parent', async (req,res) => {
     try {
         console.log(req.body);
         const dbFeedback = await createParentCompany(req.body);

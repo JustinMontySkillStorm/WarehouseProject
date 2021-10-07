@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Warehouse, ChildCompany } = require('../../model/Company.js')
 require('dotenv').config();
 
-
+// monogoose factory function
 const mongoDB = mongoFactory(process.env.MONGO_URI);
 
 /**
@@ -63,7 +63,7 @@ const addInventory = async ({locationStr: location, itemName: item, briefDescrip
         console.log(warehouse.inventory)
         await warehouse.save();
         mongoDB.disconnect();
-        return {status: 201, message: `Successfully added ${item} into warehoues located in ${location}`};
+        return {status: 201, message: `Successfully added ${item} into the warehouse located in ${location}`};
     } catch(err) {
         mongoDB.disconnect();
         throw {status: 500, message: `Could not add your item because it would exceed maxFloorSpace avaiable in warehouse`};
