@@ -14,25 +14,71 @@ app.get('/', (req,res) => {
     res.send('Hello');
 })
 
-// getter to grab a specific child organization
+/**
+ * Get Requests
+ */
+
+// grab a specific child organization
 app.get('/child/:childName', require('./routes/getters/get-org.js'));
 
-// getter to grab a specific parent organization
+// grab a specific parent organization
 app.get('/parent/:pName', require('./routes/getters/get-org.js'));
 
-app.get('/:childName/storage', require('./routes/getters/get-org'))
+// shows a specific child companies warehouse
+app.get('/:childName/storage', require('./routes/getters/get-org.js'));
 
-// post request to add warehouse to a child org
-app.post('/api/storage', require('./routes/api/save-warehouses.js'));
+// shows all warehouses and the child company that owns them. 
+app.get('/warehouses', require('./routes/getters/get-org.js'));
 
-// post request to add items to a warehouse 
-app.post('/api/inventory', require('./routes/api/save-warehouses.js'));
 
-// post request for adding a parent company to our companies collection.
+/**
+ * Post Requests
+ */
+
+//  adding a parent company to our companies collection.
 app.post('/api/parent', require('./routes/api/save-companies.js'));
 
-// post request for adding a child company to the parent company.childCompanies array
+// adding a child company to the parent company.childCompanies array
 app.post('/api/child', require('./routes/api/save-companies.js'));
+
+//  add warehouse to a child org
+app.post('/api/storage', require('./routes/api/save-warehouses.js'));
+
+//  add items to a warehouse 
+app.post('/api/inventory', require('./routes/api/save-warehouses.js'));
+
+
+/**
+ * Put Requests
+ */
+
+// update the parentOrg name
+app.put('/api/parent/:parentName', require('./routes/api/update/update-orgs.js'));
+
+// update the childOrg name
+app.put('/api/child/:childName', require('./routes/api/update/update-orgs.js'));
+
+// update warehouse business sector
+
+// update maxFloorSpace in warehouse
+
+// update quantity of item in ware
+
+// update item price
+
+
+/**
+ * Delete Requests
+ */
+
+// delete a warehouse
+
+// delete single item from warehouse
+
+// delete all items from warehouse
+
+
+
 
 
 app.listen(port, ()=> {

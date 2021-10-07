@@ -2,7 +2,7 @@ const { Schema } = require('mongoose');
 
 
 const WarehouseSchema = new Schema({
-    ownerOfWarehouse: {type: Schema.Types.ObjectID, ref: "Company"},
+    ownerOfWarehouse: {type: Schema.Types.ObjectID, ref: "ChildCompany"},
     locationStr: {
         type: String,
         required: [true, "Must provide where the warehouse is located"],

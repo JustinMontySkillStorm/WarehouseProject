@@ -1,8 +1,6 @@
-const { ParentCompany, ChildCompany } = require('../../model/Company.js');
+const { ParentCompany, ChildCompany, Warehouse } = require('../../model/Company.js');
 const router = require('express').Router();
-const mongoFactory  = require('../../helper/db-factory.js');
-
-const mongoDB = mongoFactory(process.env.MONGO_URI);
+const mongoDB  = require('../../helper/db-factory.js');
 
 // gets a child company with the provided name from req.params.  
 router.get('/child/:childName', async (req, res) => {
@@ -50,6 +48,19 @@ router.get('/:childName/storage', async(req, res)=> {
     }
 })
 
+// show all warehouses and who owns them
+router.get('/warehouses', async(req,res) => {
+    try {
+        await mongoDB.connect();
+        const childOrgStorage = await Warehouse.find().populate('ownerOfWarehouse', {name: 1, businessSector:1}).exec();
+        res.status(200).json(childOrgStorage);
+        mongoDB.disconnect();
+    } catch(err) {
+        console.log(err);
+        mongoDB.disconnect();
+        res.status(500).json(err);
+    }
+})
 
 
 module.exports = router;

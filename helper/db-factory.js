@@ -25,5 +25,7 @@ const mongoFactory = (uri) => {
     }
 }
 
-module.exports = mongoFactory;
+const mongoDB = mongoFactory(process.env.MONGO_URI);
+
+module.exports = mongoDB;
 
