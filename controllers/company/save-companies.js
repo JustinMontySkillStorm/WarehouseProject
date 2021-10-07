@@ -1,9 +1,6 @@
 const { ParentCompany, ChildCompany } = require('../../model/Company.js');
 const mongoose = require('mongoose');
-const mongoFactory = require('../../helper/db-factory.js');
-require('dotenv').config();
-
-const mongoDB = mongoFactory(process.env.MONGO_URI);
+const mongoDB = require('../../helper/db-factory.js');
 
 /**
  * adding a child company that falls underneath the parent company as a whole. 

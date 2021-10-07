@@ -1,10 +1,6 @@
-const mongoFactory = require('../../helper/db-factory');
+const mongoDB = require('../../helper/db-factory');
 const mongoose = require('mongoose');
 const { Warehouse, ChildCompany } = require('../../model/Company.js')
-require('dotenv').config();
-
-// monogoose factory function
-const mongoDB = mongoFactory(process.env.MONGO_URI);
 
 /**
  * adds the warehouse object into the correct child company array.  
