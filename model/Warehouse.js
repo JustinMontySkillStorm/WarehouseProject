@@ -7,7 +7,6 @@ const WarehouseSchema = new Schema({
         type: String,
         required: [true, "Must provide where the warehouse is located"],
     },
-    typeOfItems: String,
     maxFloorSpace: {
         type: Number,
         required: [true, 'Must provide how large warehouse is'],

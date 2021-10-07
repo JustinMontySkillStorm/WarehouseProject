@@ -9,7 +9,7 @@ const { Warehouse, ChildCompany } = require('../../model/Company.js')
  * @param {Object} req.body will be passed in here and then we deconstruct it to grab our values.
  * @returns  an object with a success code and message or a reject object with a status code and message
  */
-const addWarehouse = async ({ owner, warehouse: {locationStr: location, typeOfItems: items, maxFloorSpace: floorSpace} }) => {
+const addWarehouse = async ({ owner, warehouse: {locationStr: location, maxFloorSpace: floorSpace} }) => {
     // request needs to have which childCompany to add warehouse to.  
     try {
         await mongoDB.connect();
@@ -20,7 +20,7 @@ const addWarehouse = async ({ owner, warehouse: {locationStr: location, typeOfIt
 
         
         // create warehouse 
-        const warehouse = new Warehouse({ownerOfWarehouse: cc._id,locationStr: location, typeOfItems: items, maxFloorSpace: floorSpace})
+        const warehouse = new Warehouse({ownerOfWarehouse: cc._id,locationStr: location, maxFloorSpace: floorSpace});
         const id = new mongoose.Types.ObjectId();
     
         // save warehouse to its collection. keep _id 
