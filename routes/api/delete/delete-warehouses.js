@@ -28,6 +28,8 @@ router.delete('/api/warehouse/:location', async (req,res)=> {
     }
 })
 
+// __v in mongo is how many revisions the document has been through. 
+
 // removes a specific item from a warehouse location
 router.delete('/api/warehouse/:location/:itemName', async (req,res) => {
     try {
@@ -35,15 +37,33 @@ router.delete('/api/warehouse/:location/:itemName', async (req,res) => {
         await mongoDB.connect();
         const warehouseToUpdate = await Warehouse.findOne({"locationStr": {$regex: req.params.location, $options: 'i'}});
         console.log(warehouseToUpdate);
-        res.status(200).json(warehouseToUpdate);
+        const updatedArray = warehouseToUpdate.inventory.filter(({itemName})=> itemName != req.params.itemName);
+        warehouseToUpdate.inventory = updatedArray;
+        await warehouseToUpdate.save();
+        mongoDB.disconnect();
+        res.status(200).json({status: 200, message: `Successfully deleted ${req.params.itemName} from warehouse in ${warehouseToUpdate.locationStr}`});
     } catch(err) {
         console.log(err);
+        res.status(500).json({status: 500, message: `Could not delete ${req.params.itemName} from the warehouse.`});
     }
 })
 
 // removes all items from a warehouse location
-router.delete('/api/warehouse/:location/all', (req,res) => {
-
+router.delete('/api/warehouse/:location/all', async (req,res) => {
+    try {
+        console.log(req.params.location);
+        await mongoDB.connect();
+        const warehouseToUpdate = await Warehouse.findOne({"locationStr": {$regex: req.params.location, $options: 'i'}});
+        const inventorySz = warehouseToUpdate.inventory.length;
+        warehouseToUpdate.inventory.splice(0, inventorySz);
+        console.log(warehouseToUpdate.inventory);
+        await warehouseToUpdate.save();
+        mongoDB.disconnect();
+        res.status(200).json({status: 200, message: `Successfully removed all items from warehouse in ${warehouseToUpdate.locationStr}`});
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({status: 500, message: `There was an issue attempting to remove all items from the warehouse`});
+    }
 })
 
 
