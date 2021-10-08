@@ -12,7 +12,7 @@ router.put('/api/warehouse/updateSpace/:location', async(req, res) => {
         console.log(req.body);
         // regex expression to find something that matches if the location is slightly off for the warehouse
         await Warehouse.findOneAndUpdate({"locationStr": {$regex: req.params.location, $options: 'i'}}, {"maxFloorSpace": req.body.newFloorSpace});
-        res.status(200).json(`Successfully changed updated warehouse floor space to ${req.body.newFloorSpace}`);
+        res.status(200).json({messsage: `Successfully changed updated warehouse floor space to ${req.body.newFloorSpace}`});
     } catch(err) {
         console.log(err);
         re.status(500).json(err);

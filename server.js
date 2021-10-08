@@ -75,11 +75,11 @@ app.put('/api/warehouse/updateInventory/:location/:itemName', require('./routes/
 // here I also need to remove the warehouse._id from childCompanies organization to make sure storage is updated. 
 app.delete('/api/warehouse/:location', require('./routes/api/delete/delete-warehouses.js'));
 
-// delete single item from warehouse
-app.delete('api/warehouse/:location/:itemName', require('./routes/api/delete/delete-warehouses.js'));
+// delete single item from warehouse 
+app.delete('/api/warehouse/:location/:itemName', require('./routes/api/delete/delete-warehouses.js'));
 
-// delete all items from warehouse
-app.delete('api/warehouse/:location/all', require('./routes/api/delete/delete-warehouses.js'));
+// delete all items from warehouse (empty inventory array)
+app.delete('/api/warehouse/:location/all', require('./routes/api/delete/delete-warehouses.js'));
 
 
 app.listen(port, ()=> {
