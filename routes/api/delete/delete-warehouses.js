@@ -7,6 +7,8 @@ router.delete('/api/warehouse/:location', async (req,res)=> {
     // find the warehouse by location
     // get the warehouse _id
     // find the id in childCompanies.storage and remove that item.  
+
+    // could abstract this away into controllers.  
     try {
         await mongoDB.connect();
         const warehouseToDelete = await Warehouse.findOneAndDelete({"locationStr": {$regex: req.params.location, $options: 'i'}});
@@ -25,5 +27,24 @@ router.delete('/api/warehouse/:location', async (req,res)=> {
         res.status(500).json({message: "Unable to delete warehouse from our database"});
     }
 })
+
+// removes a specific item from a warehouse location
+router.delete('/api/warehouse/:location/:itemName', async (req,res) => {
+    try {
+        console.log(req.params.location, req.params.itemName);
+        await mongoDB.connect();
+        const warehouseToUpdate = await Warehouse.findOne({"locationStr": {$regex: req.params.location, $options: 'i'}});
+        console.log(warehouseToUpdate);
+        res.status(200).json(warehouseToUpdate);
+    } catch(err) {
+        console.log(err);
+    }
+})
+
+// removes all items from a warehouse location
+router.delete('/api/warehouse/:location/all', (req,res) => {
+
+})
+
 
 module.exports = router;
