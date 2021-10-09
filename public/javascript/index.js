@@ -1,73 +1,73 @@
 const getParent = async (parentName) => {
-    const parentToDisplay = await (await fetch(`/parent/${parentName}`)).json();
-    console.log(parentToDisplay);
+    try {
+        const parentToDisplay = await fetch(`/parent/${parentName}`);
+        const parentJson = await parentToDisplay.json();
 
-    const rootNode = document.getElementById('root-node');
-    const parentOrg = document.createElement('h2');
-    parentOrg.innerText = parentToDisplay.name;
-    rootNode.appendChild(parentOrg);
-    parentToDisplay.childCompanies.forEach((child) => {
-        const div = document.createElement('div');
-        const a = document.createElement('a');
-        a.href = `/child?corg=${child.name}`;
-        a.innerHTML = `<span> Show Warehouses </span>`
+        console.log(parentJson);
     
+        const rootNode = document.getElementById('root-node');
+        const parentOrg = document.createElement('h2');
+        parentOrg.innerText = parentJson.name;
+        rootNode.appendChild(parentOrg);
+        parentJson.childCompanies.forEach((child) => {
+            const div = document.createElement('div');
+            const a = document.createElement('a');
+            a.href = `/child?corg=${child.name}`;
+            a.innerHTML = `<span> Show Warehouses </span>`
         
-        const childName = document.createElement('h5');
-        const childBusinessSector = document.createElement('h6');
-
-        childName.innerText = child.name;
-        childBusinessSector.innerText = child.businessSector;
-
-        div.appendChild(childName);
-        div.appendChild(childBusinessSector);
-        div.appendChild(a);
-        rootNode.appendChild(div);
-    })
+            
+            const childName = document.createElement('h5');
+            const childBusinessSector = document.createElement('h6');
+    
+            childName.innerText = child.name;
+            childBusinessSector.innerText = child.businessSector;
+    
+            div.appendChild(childName);
+            div.appendChild(childBusinessSector);
+            div.appendChild(a);
+            rootNode.appendChild(div);
+        })
+    } catch(err) {
+        console.log(err);
+    }
 }
 
 // POST new child companies 
-// POST new warehouses
+const handleAddChild = async (e) => {
+    e.preventDefault();
+    console.log(e);
 
-// PUT child companies
-// PUT warehouses
+    const data = new FormData(document.querySelector('#child-form'));
 
-// DELETE child companies
-// DELETE warehouses
+    const parentName = data.get('pName');
+    const childName = data.get('cName');
+    const bizSector = data.get('businessSector');
 
+    const apiData = {
+        pName: parentName,
+        child: {
+            cName: childName,
+            businessSector: bizSector
+        }
+    }
 
-// const viewChild = async (e) => {
-//     document.getElementById('root-node').innerHTML = '';
-//     console.log(e.target.textContent)
-//     const childCompany = await (await fetch(`/${e.target.textContent}/storage`)).json();
-//     console.log(childCompany);
+    const response = await fetch('/api/child', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(apiData),
+    })
 
-//     const rootNode = document.getElementById('root-node');
-//     const childDiv = document.createElement('div');
-    
-//     const h2 = document.createElement('h3');
-//     h2.innerText = childCompany.name;
-//     const h3 = document.createElement('h4');
-//     h3.innerText = childCompany.businessSector;
+    const apiFeedback = await response.json();
+    console.log(apiFeedback);
+    location.reload();
+}
 
-//     childDiv.appendChild(h2);
-//     childDiv.appendChild(h3);
-
-//     childCompany.storage.forEach(({locationStr, maxFloorSpace, storage}) => {
-//         const location =  document.createElement('p');
-//         const maxWarehouseSpace = document.createElement('p');
-//         location.innerHTML = `Warehouse Location: ${locationStr}`;
-//         maxWarehouseSpace.innerText = `Max Floor Space: ${maxFloorSpace}`;
-
-//         childDiv.appendChild(location);
-//         childDiv.appendChild(maxWarehouseSpace);
-//     })
-    
-//     rootNode.appendChild(childDiv);
-// }
+const addBtn = document.querySelector('#add-child');
+addBtn.addEventListener('click', handleAddChild);
 
 
-document.addEventListener('DOMContentLoaded', ()=> {
-    getParent('Respawn Entertainment');
-    getParent('Huggies Inc');
+
+document.addEventListener('DOMContentLoaded', async ()=> {
+    await getParent('Respawn Entertainment');
+    await getParent('Huggies Inc');
 })
