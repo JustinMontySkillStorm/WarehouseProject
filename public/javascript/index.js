@@ -26,6 +26,15 @@ const getParent = async (parentName) => {
     })
 }
 
+// POST new child companies 
+// POST new warehouses
+
+// PUT child companies
+// PUT warehouses
+
+// DELETE child companies
+// DELETE warehouses
+
 
 // const viewChild = async (e) => {
 //     document.getElementById('root-node').innerHTML = '';
@@ -56,18 +65,6 @@ const getParent = async (parentName) => {
     
 //     rootNode.appendChild(childDiv);
 // }
-
-
-function createTable(location) {
-    let tableTag = document.createElement('table');
-    let tableHead = document.createElement('thead');
-    tableHead.appendChild();
-
-    document.createElement('tr').innerHTML = `${location} warehouse inventory`
-
-
-}
-
 
 
 document.addEventListener('DOMContentLoaded', ()=> {

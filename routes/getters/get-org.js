@@ -35,10 +35,10 @@ router.get('/parent/:pName', async(req, res)=> {
     }
 })
 
+// sends the page for a child organization
 router.get('/child', (req, res) => {
     res.sendFile(resolve('public','html','child.html'));
 })
-
 
 
 // get a childcompanies warehouses and show the inventory
