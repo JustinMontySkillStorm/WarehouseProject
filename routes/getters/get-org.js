@@ -40,6 +40,11 @@ router.get('/child', (req, res) => {
     res.sendFile(resolve('public','html','child.html'));
 })
 
+// sends the page to look at a particular warehouses's inventory
+router.get('/warehouse', (req,res)=> {
+    res.sendFile(resolve('public', 'html', 'warehouse.html'));
+})
+
 
 // get a childcompanies warehouses and show the inventory
 router.get('/:childName/storage', async(req, res)=> {
@@ -55,6 +60,17 @@ router.get('/:childName/storage', async(req, res)=> {
         console.log(err);
         mongoDB.disconnect();
         res.status(500).json(err);
+    }
+})
+
+// return a specific warehouse based on location string
+router.get('/:location/inventory', async(req,res)=> {
+    try{
+        await mongoDB.connect();
+        const specificWarehouse = await Warehouse.findOne({"locationStr": {$regex: req.params.location, $options: 'i'}})
+        res.status(200).json(specificWarehouse);
+    } catch(err) {
+        console.log(err);
     }
 })
 

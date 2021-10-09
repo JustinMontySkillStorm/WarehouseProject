@@ -15,6 +15,10 @@ app.get('/', (req,res) => {
 
 app.get('/child', require('./routes/getters/get-org.js'));
 
+app.get('/warehouse', require('./routes/getters/get-org.js'));
+
+
+
 /**
  * Get Requests
  */
@@ -25,6 +29,7 @@ app.get('/child/:childName', require('./routes/getters/get-org.js'));
 // grab a specific parent organization
 app.get('/parent/:pName', require('./routes/getters/get-org.js'));
 
+app.get('/:location/inventory', require('./routes/getters/get-org.js'));
 // shows a specific child companies warehouse
 app.get('/:childName/storage', require('./routes/getters/get-org.js'));
 

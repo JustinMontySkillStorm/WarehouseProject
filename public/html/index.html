@@ -6,11 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Manager Application</title>
     <link rel="stylesheet", href="./css/index.css">
-    <script src="./javascript/index.js"></script>
 </head>
 <body>
     <div id="root-node">
 
     </div>
+
+        <form id='child-form'>
+            <div>
+                <label>Parent Organization: </label><input type="text" name="pName">
+            </div>
+            <div>
+                <label>Child Company: </label><input type="text" name="cName">
+            </div>
+            <div>
+                <label>Business Sector: </label><input type="text" name="businessSector">
+            </div>
+        
+            <div>
+                <button id='add-child' onClick='handleAddChild'>Add Child</button>
+            </div>
+        </form>
+    <script src="./javascript/index.js"></script>
 </body>
+
 </html>
+<!-- to add a child I need a JSON object with this shape
+    {
+        pName: parent to add the child org too
+        child: {
+            name: 
+            businessSector: 
+        }
+    }
+-->

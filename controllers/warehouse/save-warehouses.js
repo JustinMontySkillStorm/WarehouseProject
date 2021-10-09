@@ -54,6 +54,7 @@ const addWarehouse = async ({ owner, warehouse: {locationStr: location, maxFloor
 const addInventory = async ({locationStr: location, itemName: item, briefDescription: desc, price, quantity}) => {
     try {
         await mongoDB.connect();
+        console.log(price, quantity, location, item);
         const warehouse = await Warehouse.findOne({locationStr: location});
         warehouse.inventory.push({itemName: item, briefDescription: desc, price, quantity});
         console.log(warehouse.inventory)

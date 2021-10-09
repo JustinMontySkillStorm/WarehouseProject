@@ -16,36 +16,40 @@ const getChildWarehouses = async () => {
 
     const {storage} = wholeChild 
 
-    const itemDiv = document.createElement('div');
+    const locationDiv = document.createElement('div')
     const location = document.createElement('h4');
 
+    locationDiv.appendChild(location);
 
 
     storage.forEach(warehouse => {
-        location.innerHTML = `Warehouse Location: ${warehouse.locationStr}<br> Max Floor Space: ${warehouse.maxFloorSpace.toLocaleString()} units`;
+        console.log(storage);
+        const aTag = document.createElement('a');
+        console.log(warehouse.locationStr);
+        aTag.href = `/warehouse?location=${warehouse.locationStr}&owner=${wholeChild.name}`;
+        aTag.innerHTML = `<span>${warehouse.locationStr}</span>`;
+        console.log(aTag);
 
-        warehouse.inventory.forEach(item => {
-            const itemPTag = document.createElement('p');
-            itemPTag.innerText = `
-            Item Name: ${item.itemName}\n
-            Description: ${item.briefDescription}\n
-            Price: $${item.price.toLocaleString()}\n
-            Stock: ${item.quantity.toLocaleString()}\n
-            `
-            itemDiv.appendChild(itemPTag);
-        })
+        const locationPTag = document.createElement('p');
+        locationPTag.innerHTML = `Warehouse location: `;
+        locationPTag.appendChild(aTag);
+        locationPTag.appendChild(document.createElement('br'));
+
+        const warehouseCapacity = document.createElement('p');
+        warehouseCapacity.innerHTML = `Capacity: ${warehouse.maxFloorSpace.toLocaleString()} units`;
+
+
+        locationDiv.appendChild(locationPTag);
+        locationDiv.appendChild(warehouseCapacity);
+
+        const spaceUsed = warehouse.inventory.reduce((sum, { quantity })=> sum += quantity, 0)
+        const floorSpaceLeft = document.createElement('p');
+        floorSpaceLeft.innerHTML = `Warehouse Space left: ${(warehouse.maxFloorSpace - spaceUsed).toLocaleString()}`
+        locationDiv.appendChild(floorSpaceLeft);
     })
 
-    rootDiv.appendChild(location);
-    rootDiv.appendChild(itemDiv);
+    rootDiv.appendChild(locationDiv);
 }
-
-
-// POST New Items
-// PUT Existing ITEMS
-
-// DELETE Single item
-// DELETE All items 
 
 document.addEventListener('DOMContentLoaded', (req,res) => {
     getChildWarehouses();
