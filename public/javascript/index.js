@@ -1,3 +1,4 @@
+// gets the parent organization and displays them to the screen.
 const getParent = async (parentName) => {
     try {
         const parentToDisplay = await fetch(`/parent/${parentName}`);
@@ -35,9 +36,9 @@ const getParent = async (parentName) => {
 // POST new child companies 
 const handleAddChild = async (e) => {
     e.preventDefault();
-    console.log(e);
 
-    const data = new FormData(document.querySelector('#child-form'));
+    const form = document.querySelector('#child-form');
+    const data = new FormData(form);
 
     const parentName = data.get('pName');
     const childName = data.get('cName');
@@ -59,15 +60,16 @@ const handleAddChild = async (e) => {
 
     const apiFeedback = await response.json();
     console.log(apiFeedback);
+
+    form.reset();
     location.reload();
 }
 
 const addBtn = document.querySelector('#add-child');
 addBtn.addEventListener('click', handleAddChild);
 
-
-
 document.addEventListener('DOMContentLoaded', async ()=> {
     await getParent('Respawn Entertainment');
     await getParent('Huggies Inc');
 })
+

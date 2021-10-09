@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Inventory</title>
+</head>
+<body>
+
+    <div id='root-node'>
+
+    </div>
+
+    <form id='inventory-form'>
+        <div>
+            <label>Item Name: </label><input type="text" name='itemName'>
+        </div>
+        <div>
+            <label>Description of Item: </label><input type="text" name="briefDescription">
+        </div>
+        <div>
+            <label>Price:</label><input type="number" name="price">
+        </div>
+        <div>
+            <label>Quantity:</label><input type="number" name="quantity">
+        </div>
+        <div>
+            <button id='add-item' onClick=addItem>Add Item</button>
+            <button id='update-item' onClick=updateItem>Update Item</button> 
+        </div>
+    </form>
+    
+    <script src="./javascript/warehouse.js"></script>
+</body>
+</html>
