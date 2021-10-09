@@ -10,9 +10,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.get('/', (req,res) => {
-    console.log('working');
-    res.send('Hello');
+    res.sendFile(resolve('public', 'html', 'index.html'));
 })
+
+app.get('/child', require('./routes/getters/get-org.js'));
 
 /**
  * Get Requests
