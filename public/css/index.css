@@ -1,17 +1,31 @@
-form {
-    display: table;
+@media(min-width:768px){
+    .contact-input{
+        width: 50%;
+    }
 }
 
-.form-el{
-    display: table-row;
+form {
+    display: table;
 }
 
 label, input {
     display: table-cell;
 }
 
+.form-el{
+    display: table-row;
+}
+
+.main-c{
+    background-color: #fafafa;
+}
+
 #form-holder{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#about{
+    background-color: #fafafa;
 }

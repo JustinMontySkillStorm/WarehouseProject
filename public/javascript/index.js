@@ -4,7 +4,6 @@ const getParent = async (parentName) => {
         const parentToDisplay = await fetch(`/parent/${parentName}`);
         const parentJson = await parentToDisplay.json();
 
-        // console.log(parentJson);
     
         const rootNode = document.getElementById('root-node');
         const parentDiv = document.createElement('div');
@@ -18,7 +17,7 @@ const getParent = async (parentName) => {
 
         parentJson.childCompanies.forEach((child) => {
             const div = document.createElement('div');
-            div.classList.add('card');
+            div.classList.add('card', 'main-c');
 
             const cardBody = document.createElement('div');
             cardBody.classList.add('card-body');
