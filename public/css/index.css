@@ -1,0 +1,17 @@
+form {
+    display: table;
+}
+
+.form-el{
+    display: table-row;
+}
+
+label, input {
+    display: table-cell;
+}
+
+#form-holder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

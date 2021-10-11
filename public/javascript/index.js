@@ -4,29 +4,47 @@ const getParent = async (parentName) => {
         const parentToDisplay = await fetch(`/parent/${parentName}`);
         const parentJson = await parentToDisplay.json();
 
-        console.log(parentJson);
+        // console.log(parentJson);
     
         const rootNode = document.getElementById('root-node');
-        const parentOrg = document.createElement('h2');
+        const parentDiv = document.createElement('div');
+        parentDiv.classList.add('col-md');
+        const parentOrg = document.createElement('h3');
+        parentOrg.classList.add('py-sm-3');
         parentOrg.innerText = parentJson.name;
-        rootNode.appendChild(parentOrg);
+
+        parentDiv.appendChild(parentOrg);
+        rootNode.appendChild(parentDiv);
+
         parentJson.childCompanies.forEach((child) => {
             const div = document.createElement('div');
+            div.classList.add('card');
+
+            const cardBody = document.createElement('div');
+            cardBody.classList.add('card-body');
+            div.appendChild(cardBody);
+
+            // still fine here. 
             const a = document.createElement('a');
             a.href = `/child?corg=${child.name}`;
             a.innerHTML = `<span> Show Warehouses </span>`
-        
+            a.classList.add('btn', 'btn-primary', 'btn-sm');
             
+        
             const childName = document.createElement('h5');
+            childName.classList.add('card-title');
             const childBusinessSector = document.createElement('h6');
+            childBusinessSector.classList.add('card-subtitle', 'mb-2', 'text-muted');
     
             childName.innerText = child.name;
             childBusinessSector.innerText = child.businessSector;
     
-            div.appendChild(childName);
-            div.appendChild(childBusinessSector);
-            div.appendChild(a);
-            rootNode.appendChild(div);
+            cardBody.appendChild(childName);
+            cardBody.appendChild(childBusinessSector);
+            cardBody.appendChild(a);
+            div.appendChild(cardBody);
+            parentDiv.appendChild(div);
+            rootNode.appendChild(parentDiv);
         })
     } catch(err) {
         console.log(err);
@@ -69,6 +87,10 @@ const addBtn = document.querySelector('#add-child');
 addBtn.addEventListener('click', handleAddChild);
 
 document.addEventListener('DOMContentLoaded', async ()=> {
-    await getParent('Respawn Entertainment');
-    await getParent('Huggies Inc');
+    Promise.all([ getParent('Respawn Entertainment'), getParent('Huggies Inc')])
+    .then(()=> {
+        console.log('Printing parent orgs to the screen.');
+    }).catch(err => {
+        console.log(err);
+    })
 })
