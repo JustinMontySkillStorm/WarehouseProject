@@ -51,6 +51,39 @@ const getChildWarehouses = async () => {
     rootDiv.appendChild(locationDiv);
 }
 
+
+const handleAddStorage = async (e) => {
+    e.preventDefault();
+
+    const form = document.querySelector('#warehouse-form');
+    const data = new FormData(form);
+
+    const owner = params.get('corg');
+    const value = Object.fromEntries(data.entries());
+
+    // console.log(owner, value);
+
+    const apiData = {
+        owner: owner,
+        warehouse: value,
+    }
+
+    const response = await fetch('/api/storage', {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(apiData),
+    })
+
+    const apiFeedback = await response.json();
+    console.log(apiFeedback);
+
+    form.reset();
+    location.reload();
+}
+
+const addStorage = document.getElementById('add-storage');
+addStorage.addEventListener('click', handleAddStorage);
+
 document.addEventListener('DOMContentLoaded', (req,res) => {
     getChildWarehouses();
 })

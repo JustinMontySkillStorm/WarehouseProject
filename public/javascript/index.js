@@ -72,4 +72,3 @@ document.addEventListener('DOMContentLoaded', async ()=> {
     await getParent('Respawn Entertainment');
     await getParent('Huggies Inc');
 })
-

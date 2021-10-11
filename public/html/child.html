@@ -5,11 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Child Warehouses</title>
-    <script src='./javascript/child.js'></script>
 </head>
 <body>
     <div id="root-node">
         
     </div>
+
+    <form id='warehouse-form'>
+        <div>
+            <label>Warehouse Location: </label><input type="text" name="locationStr">
+        </div>
+        <div>
+            <label>Floor Space: </label><input type="number" name="maxFloorSpace">
+        </div>
+        <div>
+            <button id='add-storage' onClick=handleAddStorage>Add Storage</button>
+        </div>
+    </form>
+    <script src='./javascript/child.js'></script>
 </body>
 </html>
