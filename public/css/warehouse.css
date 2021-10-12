@@ -6,7 +6,7 @@ label, input {
     display: table-cell;
 }
 
-.form-el{
+p {
     display: table-row;
 }
 
@@ -15,19 +15,11 @@ label, input {
     background-color: #8338ec;
 }
 
-.main-c{
-    background-color: #fafafa;
-}
-
-.button-group{
-    padding-top: 10px;
-}
-
 #nav-section{
     background-color: #8338ec;
 }
 
-#warehouse-form {
+#inventory-form{
     display: flex;
     flex-direction: column;
     justify-content: center;

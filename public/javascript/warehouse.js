@@ -14,50 +14,55 @@ const displayItems = async () => {
 
     const rootDiv = document.querySelector('#root-node');
     const h2 = document.createElement('h2');
-    h2.innerHTML = `${params.get('owner')}'s ${params.get('location')} warehouse`;
-    const inventoryDiv = document.createElement('div');
+    h2.innerHTML = `${params.get('location')} warehouse`;
 
-    
+    const tableBody = document.querySelector('#table-body');
+
     inventory.forEach(({itemName, briefDescription, price, quantity}) => {
-        const itemDiv = document.createElement('div');
-        const name = document.createElement('p');
-        const desc = document.createElement('p');
-        const p = document.createElement('p');
-        const q = document.createElement('p');
+        const itemRow = document.createElement('tr');
+        const thRow = document.createElement('th');
+        thRow.setAttribute('scope', "row");
+        const name = document.createElement('td');
+        const desc = document.createElement('td');
+        const p = document.createElement('td');
+        const q = document.createElement('td');
 
         const deleteBtn = document.createElement('button');
         deleteBtn.value = itemName;
         deleteBtn.onclick = deleteItem;
-        deleteBtn.innerText= "Delete"
+        deleteBtn.innerHTML= `<span> <img src=./images/trash.svg> </span>`;
 
-        name.innerHTML = `${itemName}<br>`;
-        desc.innerHTML = `${briefDescription}<br>`;
-        p.innerHTML = `${price}<br>`;
-        q.innerHTML = `${quantity}<br>`;
+        thRow.appendChild(deleteBtn);
 
-        itemDiv.appendChild(name);
-        itemDiv.appendChild(desc);
-        itemDiv.appendChild(p);
-        itemDiv.appendChild(q);
-        itemDiv.appendChild(deleteBtn);
-        inventoryDiv.appendChild(itemDiv);
+        name.innerHTML = `${itemName}`;
+        desc.innerHTML = `${briefDescription}`;
+        p.innerHTML = `$${price.toLocaleString()}`;
+        q.innerHTML = `${quantity.toLocaleString()}`;
+
+        itemRow.appendChild(thRow);
+        itemRow.appendChild(name);
+        itemRow.appendChild(desc);
+        itemRow.appendChild(p);
+        itemRow.appendChild(q);
+
+        tableBody.appendChild(itemRow);
     })
-
-    
     rootDiv.appendChild(h2);
-    rootDiv.appendChild(inventoryDiv);
 }
 
 const deleteItem = async (e) => {
-    const serverResponse = await fetch(`/api/warehouse/${params.get('location')}/${e.target.value}`, {
+    const value = e.target.parentNode.parentNode.value;
+    console.log(value);
+    const serverResponse = await fetch(`/api/warehouse/${params.get('location')}/${value}`, {
         method: 'DELETE',
     })
+
     const resp = await serverResponse.json();
     console.log(resp);
+
+    // remove the row from the table body when the delete button is pressed
     // how Sean removed it in the movie example.
-    // console.log(e.target.parentNode.parentNode.parentNode);
-    // console.log(e.target.parentNode); 
-    e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+    e.target.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode.parentNode.parentNode);
 }
 
 // add an item to our database.
