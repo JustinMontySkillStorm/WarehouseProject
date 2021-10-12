@@ -3,52 +3,63 @@ const params = new URLSearchParams(window.location.search);
 const getChildWarehouses = async () => {
     const wholeChild = await((await fetch(`/${params.get('corg')}/storage`))).json();
     console.log(wholeChild)
-    const rootDiv = document.getElementById('root-node');
+    const mainDiv = document.getElementById('main-container');
     
     const currentlyViewing = document.createElement('h3');
+    currentlyViewing.classList.add('text-center', 'pt-4');
     currentlyViewing.innerHTML = `${wholeChild.name} Warehouses'`;
 
     const businessSector = document.createElement('h4');
+    businessSector.classList.add('text-center', 'pb-4');
     businessSector.innerHTML = `${wholeChild.businessSector}`;
 
-    rootDiv.appendChild(currentlyViewing);
-    rootDiv.appendChild(businessSector);
+    mainDiv.appendChild(currentlyViewing);
+    mainDiv.appendChild(businessSector);
 
     const {storage} = wholeChild 
 
-    const locationDiv = document.createElement('div')
-    const location = document.createElement('h4');
-
-    locationDiv.appendChild(location);
+    const warehouseDiv = document.getElementById('root-node');
 
 
     storage.forEach(warehouse => {
+        const div = document.createElement('div');
+        div.classList.add('card','main-c');
+
+        const cardBody = document.createElement('div');
+        cardBody.classList.add('card-body');
+
+        div.appendChild(cardBody);
+
         console.log(storage);
         const aTag = document.createElement('a');
         console.log(warehouse.locationStr);
         aTag.href = `/warehouse?location=${warehouse.locationStr}&owner=${wholeChild.name}`;
-        aTag.innerHTML = `<span>${warehouse.locationStr}</span>`;
-        console.log(aTag);
+        aTag.innerHTML = `<span>Display Inventory</span>`;
+        aTag.classList.add('btn','btn-col', 'btn-sm', 'text-light');
 
-        const locationPTag = document.createElement('p');
-        locationPTag.innerHTML = `Warehouse location: `;
-        locationPTag.appendChild(aTag);
-        locationPTag.appendChild(document.createElement('br'));
+        const locationTag = document.createElement('h5');
+        locationTag.innerHTML = `Warehouse location: ${warehouse.locationStr}`;
+        locationTag.classList.add('card-title');
 
-        const warehouseCapacity = document.createElement('p');
+        const warehouseCapacity = document.createElement('h6');
         warehouseCapacity.innerHTML = `Capacity: ${warehouse.maxFloorSpace.toLocaleString()} units`;
+        warehouseCapacity.classList.add('card-subtitle', 'mb-2', 'text-muted');
 
-
-        locationDiv.appendChild(locationPTag);
-        locationDiv.appendChild(warehouseCapacity);
 
         const spaceUsed = warehouse.inventory.reduce((sum, { quantity })=> sum += quantity, 0)
-        const floorSpaceLeft = document.createElement('p');
+        const floorSpaceLeft = document.createElement('h6');
+        floorSpaceLeft.classList.add('card-subtitle','mb-2', 'text-muted');
         floorSpaceLeft.innerHTML = `Warehouse Space left: ${(warehouse.maxFloorSpace - spaceUsed).toLocaleString()}`
-        locationDiv.appendChild(floorSpaceLeft);
+
+        cardBody.appendChild(locationTag);
+        cardBody.appendChild(floorSpaceLeft);
+        cardBody.appendChild(warehouseCapacity);
+        cardBody.appendChild(aTag);
+        div.appendChild(cardBody);
+        warehouseDiv.appendChild(div);
     })
 
-    rootDiv.appendChild(locationDiv);
+    mainDiv.appendChild(warehouseDiv);
 }
 
 

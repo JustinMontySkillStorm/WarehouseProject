@@ -20,6 +20,11 @@ label, input {
     background-color: #fafafa;
 }
 
+.btn-col{
+    border-radius: 30px;
+    background-color:#7400b8;
+}
+
 #form-holder{
     display: flex;
     justify-content: center;
@@ -29,3 +34,9 @@ label, input {
 #about{
     background-color: #fafafa;
 }
+
+#testimonial{
+    background-color: #7400b8;
+}
+
+

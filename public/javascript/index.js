@@ -4,7 +4,6 @@ const getParent = async (parentName) => {
         const parentToDisplay = await fetch(`/parent/${parentName}`);
         const parentJson = await parentToDisplay.json();
 
-    
         const rootNode = document.getElementById('root-node');
         const parentDiv = document.createElement('div');
         parentDiv.classList.add('col-md');
@@ -21,13 +20,12 @@ const getParent = async (parentName) => {
 
             const cardBody = document.createElement('div');
             cardBody.classList.add('card-body');
-            div.appendChild(cardBody);
 
             // still fine here. 
             const a = document.createElement('a');
             a.href = `/child?corg=${child.name}`;
             a.innerHTML = `<span> Show Warehouses </span>`
-            a.classList.add('btn', 'btn-primary', 'btn-sm');
+            a.classList.add('btn', 'btn-col', 'btn-sm', 'text-light');
             
         
             const childName = document.createElement('h5');
@@ -86,10 +84,14 @@ const addBtn = document.querySelector('#add-child');
 addBtn.addEventListener('click', handleAddChild);
 
 document.addEventListener('DOMContentLoaded', async ()=> {
-    Promise.all([ getParent('Respawn Entertainment'), getParent('Huggies Inc')])
-    .then(()=> {
-        console.log('Printing parent orgs to the screen.');
-    }).catch(err => {
-        console.log(err);
-    })
+    // for some reason promise.all was causing a bug with mongoose. 
+
+    // Promise.all([  getParent('Huggies Inc'), getParent('Respawn Entertainment')])
+    // .then(promise => {
+    //     console.log("Printing parent orgs to screen");
+    // }).catch(err => {
+    //     console.log(err);
+    // });
+    await getParent('Huggies Inc');
+    await getParent('Respawn Entertainment');
 })

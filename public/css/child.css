@@ -1,0 +1,31 @@
+form {
+    display: table;
+}
+
+label, input {
+    display: table-cell;
+}
+
+.form-el{
+    display: table-row;
+}
+
+.btn-col{
+    border-radius: 30px;
+    background-color: #7400b8;
+}
+
+.main-c{
+    background-color: #fafafa;
+}
+
+#nav-section{
+    background-color: #7400b8;
+}
+
+#warehouse-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

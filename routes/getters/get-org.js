@@ -25,7 +25,8 @@ router.get('/parent/:pName', async(req, res)=> {
     try {
         await mongoDB.connect();
         console.log(req.params);
-        const parentOrg = await ParentCompany.findOne({"name": req.params.pName}).populate('childCompanies', {name: 1, businessSector: 1}).exec();
+        const parentOrg = await ParentCompany.findOne({"name": req.params.pName}).populate({path: 'childCompanies'}).exec();
+        console.log(parentOrg);
         res.status(200).json(parentOrg);
         mongoDB.disconnect();
     } catch(err) {
@@ -49,9 +50,7 @@ router.get('/warehouse', (req,res)=> {
 // get a childcompanies warehouses and show the inventory
 router.get('/:childName/storage', async(req, res)=> {
     try {
-        console.log(req.query);
         await mongoDB.connect();
-        console.log(req.params);
         const childOrgStorage = await ChildCompany.findOne({"name": req.params.childName}).populate('storage').exec();
         res.sendFile(resolve('public','html','child.html'));
         res.status(200).json(childOrgStorage);
