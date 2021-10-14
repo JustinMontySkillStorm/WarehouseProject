@@ -11,6 +11,22 @@
 </head>
 <body>
 
+    <div class="modal fade" id="error-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Error Message</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id='error-message'>
+                
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+      </div>
+
     <!-- Navbar section -->
     <nav class="navbar navbar-expand-lg navbar-dark py-3 page-end">
         <div class="container">
@@ -91,15 +107,15 @@
         <form id='child-form'>
             <p class="form-el">
                 <label>Parent Organization: </label>
-                <input type="text" name="pName">
+                <input type="text" name="pName" required>
             </p>
             <p class="form-el">
                 <label>Child Company: </label>
-                <input type="text" name="cName">
+                <input type="text" name="cName" required>
             </p>
             <p class="form-el pb-2">
                 <label>Business Sector: </label>
-                <input type="text" name="businessSector">
+                <input type="text" name="businessSector" required>
             </p>
             <div class="form-el">
                 <button id='add-child' class="btn btn-col btn-small text-light" onClick=handleAddChild>Add Child</button>

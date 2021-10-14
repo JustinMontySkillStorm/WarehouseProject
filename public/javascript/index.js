@@ -59,6 +59,11 @@ const handleAddChild = async (e) => {
     const childName = data.get('cName');
     const bizSector = data.get('businessSector');
 
+    if(!parentName || !childName || !bizSector) {
+            addErrorMessageToModal('All inputs are required');
+            return;
+    }
+    
     const apiData = {
         pName: parentName,
         child: {
@@ -74,10 +79,21 @@ const handleAddChild = async (e) => {
     })
 
     const apiFeedback = await response.json();
-    console.log(apiFeedback);
 
-    form.reset();
-    location.reload();
+    if(apiFeedback.status === 404) {
+        addErrorMessageToModal(apiFeedback.message);
+    } else {
+        form.reset();
+        location.reload();
+    }
+}
+
+const addErrorMessageToModal = (errMsg) => {
+    const errModalBody = document.querySelector('#error-message');
+    errModalBody.innerHTML = `<p>${errMsg}</p>`;
+        
+    const errModal = new bootstrap.Modal(document.querySelector('#error-modal'));
+    errModal.show();
 }
 
 const addBtn = document.querySelector('#add-child');
@@ -85,13 +101,13 @@ addBtn.addEventListener('click', handleAddChild);
 
 document.addEventListener('DOMContentLoaded', async ()=> {
     // for some reason promise.all was causing a bug with mongoose. 
-
     // Promise.all([  getParent('Huggies Inc'), getParent('Respawn Entertainment')])
     // .then(promise => {
     //     console.log("Printing parent orgs to screen");
     // }).catch(err => {
     //     console.log(err);
     // });
+
     await getParent('Huggies Inc');
     await getParent('Respawn Entertainment');
 })

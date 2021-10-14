@@ -96,13 +96,9 @@ const addItem = async (e) => {
     const apiFeedback = await response.json();
 
     if(apiFeedback.status === 500) {
-        console.log('hitting this');
         // grab the modal I have and show it to user with the error message
-        const errModalBody = document.querySelector('#error-message');
-        errModalBody.innerHTML = `<p>${apiFeedback.message}</p>`;
-        
-        const errModal = new bootstrap.Modal(document.querySelector('#error-modal'));
-        errModal.show();
+        // if the inventory is maxed out
+        addErrorMessageToModal(apiFeedback.message);
     } else {
         form.reset();
         location.reload();
@@ -165,6 +161,14 @@ updateBtn.addEventListener('click', updateItem);
 document.addEventListener('DOMContentLoaded', async ()=> {
     await displayItems();
 })
+
+const addErrorMessageToModal = (errMsg) => {
+    const errModalBody = document.querySelector('#error-message');
+    errModalBody.innerHTML = `<p>${errMsg}</p>`;
+        
+    const errModal = new bootstrap.Modal(document.querySelector('#error-modal'));
+    errModal.show();
+}
 
 /**
  * Data needs to be sent in this shape to the backend

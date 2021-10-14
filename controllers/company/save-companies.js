@@ -17,6 +17,12 @@ const addChildCompany = async ({pName, child: {cName, businessSector}}) => {
         await mongoDB.connect();
 
         const parentOrg = await ParentCompany.findOne({"name": pName});
+
+        if(parentOrg === null || undefined) {
+            mongoDB.disconnect();
+            return {status: 404, message: `Could not find the company with a name of ${pName}`};
+        }
+        
         const childCompany = new ChildCompany({parentID: parentOrg._id, name: cName, businessSector: businessSector});
 
         console.log(parentOrg);
