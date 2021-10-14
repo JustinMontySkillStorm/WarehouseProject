@@ -85,7 +85,7 @@ app.put('/api/warehouse/updateInventory/:location/:itemName', require('./routes/
 app.delete('/api/warehouse/:location/:itemName', require('./routes/api/delete/delete-warehouses.js'));
 
 // delete all items from warehouse (empty inventory array)
-app.delete('/api/warehouse/:location/all', require('./routes/api/delete/delete-warehouses.js'));
+app.delete('/api/removeAll/:location', require('./routes/api/delete/delete-warehouses.js'));
 
 
 app.listen(port, ()=> {

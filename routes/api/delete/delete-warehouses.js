@@ -35,10 +35,8 @@ router.delete('/api/warehouse/:location/:itemName', async (req,res) => {
     try {
         console.log(req.params.location, req.params.itemName);
         await mongoDB.connect();
-        const warehouseToUpdate = await Warehouse.findOne({"locationStr": {$regex: req.params.location, $options: 'i'}});
+        const warehouseToUpdate = await Warehouse.findOneAndUpdate({"locationStr": {$regex: req.params.location, $options: 'i'}}, {$pull: {"inventory": {"itemName": req.params.itemName}}}, {new:true});
         console.log(warehouseToUpdate);
-        const updatedArray = warehouseToUpdate.inventory.filter(({itemName})=> itemName != req.params.itemName);
-        warehouseToUpdate.inventory = updatedArray;
         await warehouseToUpdate.save();
         mongoDB.disconnect();
         res.status(200).json({status: 200, message: `Successfully deleted ${req.params.itemName} from warehouse in ${warehouseToUpdate.locationStr}`});
@@ -49,15 +47,12 @@ router.delete('/api/warehouse/:location/:itemName', async (req,res) => {
 })
 
 // removes all items from a warehouse location
-router.delete('/api/warehouse/:location/all', async (req,res) => {
+router.delete('/api/removeAll/:location', async (req,res) => {
     try {
         console.log(req.params.location);
         await mongoDB.connect();
-        const warehouseToUpdate = await Warehouse.findOne({"locationStr": {$regex: req.params.location, $options: 'i'}});
-        const inventorySz = warehouseToUpdate.inventory.length;
-        warehouseToUpdate.inventory.splice(0, inventorySz);
-        console.log(warehouseToUpdate.inventory);
-        await warehouseToUpdate.save();
+        const warehouseToUpdate = await Warehouse.findOneAndUpdate({"locationStr": {$regex: req.params.location, $options: 'i'}}, {$set: {"inventory": []}}, {new: true});
+        console.log(warehouseToUpdate);
         mongoDB.disconnect();
         res.status(200).json({status: 200, message: `Successfully removed all items from warehouse in ${warehouseToUpdate.locationStr}`});
     } catch(err) {

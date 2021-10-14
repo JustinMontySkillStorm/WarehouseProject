@@ -16,6 +16,12 @@ const displayItems = async () => {
     h5.innerHTML = `Max Floorspace: ${jsonData.maxFloorSpace}`;
     h5.classList.add('text-muted');
 
+    const removeAllBtn = document.createElement('button');
+    removeAllBtn.setAttribute('id','remove-all');
+    removeAllBtn.classList.add('btn-col','text-light');
+    removeAllBtn.innerText = 'Remove All Items'
+    removeAllBtn.onclick = removeAll
+
     const tableBody = document.querySelector('#table-body');
 
     inventory.forEach(({itemName, briefDescription, price, quantity}) => {
@@ -49,6 +55,7 @@ const displayItems = async () => {
     })
     rootDiv.appendChild(h2);
     rootDiv.appendChild(h5);
+    rootDiv.appendChild(removeAllBtn);
 }
 
 const deleteItem = async (e) => {
@@ -106,7 +113,6 @@ const addItem = async (e) => {
 
 const updateItem = async (e) =>{
     e.preventDefault();
-    console.log('going to update this item');
 
     const form = document.querySelector('#inventory-form');
     const data = new FormData(form);
@@ -133,6 +139,20 @@ const updateItem = async (e) =>{
     console.log(apiFeedback);
 
     form.reset();
+    location.reload();
+}
+
+const removeAll = async () => {
+    console.log('remove all');
+
+    const response = await fetch(`/api/removeAll/${params.get('location')}`, {
+        method: "DELETE"
+    })
+
+    const jsonRes = await response.json();
+
+    console.log(jsonRes);
+
     location.reload();
 }
 
