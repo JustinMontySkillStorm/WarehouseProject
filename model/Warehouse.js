@@ -1,6 +1,15 @@
 const { Schema } = require('mongoose');
 
-
+/**
+ * WarehouseSchema 
+ * 
+ * the most complex one taking advantage of a lot of features that mongoose has to offer 
+ * 
+ * ownerOfWarehouse is an ObjectID that will be of the ChildCompany that owns it
+ * locationStr is which city the warehouse is located in. 
+ * maxFloorSpace is the amount of units the warehouse can hold
+ * inventory is an embedded array of Objects describing what type of items are stored in the warehouse
+ */
 const WarehouseSchema = new Schema({
     ownerOfWarehouse: {type: Schema.Types.ObjectID, ref: "ChildCompany"},
     locationStr: {

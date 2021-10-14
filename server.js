@@ -9,6 +9,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+// serving up HTML pages
 app.get('/', (req,res) => {
     res.sendFile(resolve('public', 'html', 'index.html'));
 })

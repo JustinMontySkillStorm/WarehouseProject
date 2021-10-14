@@ -1,5 +1,11 @@
+/**
+ * using this to search for query parameters on the page.  
+ */
 const params = new URLSearchParams(window.location.search);
 
+/**
+ * Method to dynamically print all of the children and their warehouses' to the screen.
+ */
 const getChildWarehouses = async () => {
     const wholeChild = await((await fetch(`/${params.get('corg')}/storage`))).json();
     console.log(wholeChild)
@@ -62,7 +68,12 @@ const getChildWarehouses = async () => {
     mainDiv.appendChild(warehouseDiv);
 }
 
-
+/**
+ * onClick handler for our button with an id of add-storage
+ * 
+ * @param {*} e JavaScript event being emitted from an event handler
+ * @returns if unsuccessfull a modal will appear to the user.  if successful form will reset and location will reload.
+ */
 const handleAddStorage = async (e) => {
     e.preventDefault();
 
@@ -101,6 +112,11 @@ const handleAddStorage = async (e) => {
     }
 }
 
+/**
+ * function to show the modal with the passed in error message.
+ * 
+ * @param {*} errMsg to place into the innerHTML of the modal body.
+ */
 const addErrorMessageToModal = (errMsg) => {
     const errModalBody = document.querySelector('#error-message');
     errModalBody.innerHTML = `<p>${errMsg}</p>`;
@@ -109,9 +125,14 @@ const addErrorMessageToModal = (errMsg) => {
     errModal.show();
 }
 
+/**
+ * eventListener placed on the button with an id of add-storage in our html
+ * to fire off a post request to our backend.
+ */
 const addStorage = document.getElementById('add-storage');
 addStorage.addEventListener('click', handleAddStorage);
 
+// event listener for the DOM when anything loads on the page we will call getChildWarehouses
 document.addEventListener('DOMContentLoaded', (req,res) => {
     getChildWarehouses();
 })

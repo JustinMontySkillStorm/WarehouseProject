@@ -1,6 +1,12 @@
-// gets the parent organization and displays them to the screen.
+/**
+ * function that is called when the domcontent is loaded.  Only grabbing 2 of the parentCompanies in our database 
+ * dynamically creating our Active Organizations columns for interacting with on our home page.
+ * @param {*} parentName the parentName of an organization to display to the screen.  
+ * 
+ */
 const getParent = async (parentName) => {
     try {
+        // a get to this route will also cause the childCompanies array of Object Ids to be populated to the screen
         const parentToDisplay = await fetch(`/parent/${parentName}`);
         const parentJson = await parentToDisplay.json();
 
@@ -47,7 +53,13 @@ const getParent = async (parentName) => {
     }
 }
 
-// POST new child companies 
+/**
+ * if unsuccessful a modal will be displayed to the user with some information to help them out
+ * if successful then the form will reset and the location will reload so you can see the child added to the parent company.
+ * 
+ * @param {*} e eventListener object that is passed in from the button onClick. 
+ * @returns nothing. 
+ */
 const handleAddChild = async (e) => {
     e.preventDefault();
 
@@ -87,6 +99,11 @@ const handleAddChild = async (e) => {
     }
 }
 
+/**
+ * function to show the modal with the passed in error message.
+ * 
+ * @param {*} errMsg to place into the innerHTML of the modal body.
+ */
 const addErrorMessageToModal = (errMsg) => {
     const errModalBody = document.querySelector('#error-message');
     errModalBody.innerHTML = `<p>${errMsg}</p>`;
@@ -95,9 +112,11 @@ const addErrorMessageToModal = (errMsg) => {
     errModal.show();
 }
 
+// adding eventListener to our button with an id of add-child
 const addBtn = document.querySelector('#add-child');
 addBtn.addEventListener('click', handleAddChild);
 
+// will load our parent content when the DOM content is loaded
 document.addEventListener('DOMContentLoaded', async ()=> {
     // for some reason promise.all was causing a bug with mongoose. 
     // Promise.all([  getParent('Huggies Inc'), getParent('Respawn Entertainment')])
@@ -107,6 +126,6 @@ document.addEventListener('DOMContentLoaded', async ()=> {
     //     console.log(err);
     // });
 
-    await getParent('Huggies Inc');
-    await getParent('Respawn Entertainment');
+    await getParent("Kraft Foods Inc");
+    await getParent('PepsiCo');
 })

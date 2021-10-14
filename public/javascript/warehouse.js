@@ -1,5 +1,9 @@
 const params = new URLSearchParams(window.location.search);
 
+/**
+ * displays all the inventory in the warehouse.storage array into a table 
+ * for the users to be able to interact with.
+ */
 const displayItems = async () => {
     const specificWarehouse = await fetch(`/${params.get('location')}/inventory`);
     const jsonData = await specificWarehouse.json();
@@ -13,7 +17,7 @@ const displayItems = async () => {
     h2.innerHTML = `${params.get('location')} warehouse`;
 
     const h5 = document.createElement('h5');
-    h5.innerHTML = `Max Floorspace: ${jsonData.maxFloorSpace}`;
+    h5.innerHTML = `Max Floorspace: ${jsonData.maxFloorSpace.toLocaleString()}`;
     h5.classList.add('text-muted');
 
     const removeAllBtn = document.createElement('button');
@@ -58,6 +62,12 @@ const displayItems = async () => {
     rootDiv.appendChild(removeAllBtn);
 }
 
+/**
+ * event handler to delete the current row item on the screen and in our database
+ * 
+ * @param {*} e event that we are using to find the value of the button click and fire off 
+ * a DELETE request to. 
+ */
 const deleteItem = async (e) => {
     const value = e.target.parentNode.parentNode.value;
     console.log(value);
@@ -74,11 +84,15 @@ const deleteItem = async (e) => {
 }
 
 /**
+ * fires off a post request to add the data from our HTML form.
+ * will reset the form and reload the page displaying new item in the table. 
  * 
  * @param {*} e event thats passed in from our HTML elements
  */
 const addItem = async (e) => {
     e.preventDefault();
+
+    // no validation for user inputs over here.
 
     const form = document.querySelector('#inventory-form');
     const data = new FormData(form);
@@ -107,6 +121,11 @@ const addItem = async (e) => {
     
 }
 
+/**
+ * fires off a PUT request and updates the item in our warehouse.inventory.  
+ * 
+ * @param {*} e eventHandler passed in from the onClick event
+ */
 const updateItem = async (e) =>{
     e.preventDefault();
 
@@ -141,6 +160,9 @@ const updateItem = async (e) =>{
     }
 }
 
+/**
+ * Fires off a DELETE request that will remove all the items currently in the warehouse
+ */
 const removeAll = async () => {
     console.log('remove all');
 
@@ -155,6 +177,9 @@ const removeAll = async () => {
     location.reload();
 }
 
+/**
+ * event listener section for this page
+ */
 const postItem = document.querySelector('#add-item');
 postItem.addEventListener('click', addItem);
 
@@ -165,6 +190,11 @@ document.addEventListener('DOMContentLoaded', async ()=> {
     await displayItems();
 })
 
+/**
+ * function to show the modal with the passed in error message.
+ * 
+ * @param {*} errMsg to place into the innerHTML of the modal body.
+ */
 const addErrorMessageToModal = (errMsg) => {
     const errModalBody = document.querySelector('#error-message');
     errModalBody.innerHTML = `<p>${errMsg}</p>`;
