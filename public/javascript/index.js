@@ -21,7 +21,6 @@ const getParent = async (parentName) => {
             const cardBody = document.createElement('div');
             cardBody.classList.add('card-body');
 
-            // still fine here. 
             const a = document.createElement('a');
             a.href = `/child?corg=${child.name}`;
             a.innerHTML = `<span> Show Warehouses </span>`
@@ -63,7 +62,7 @@ const handleAddChild = async (e) => {
             addErrorMessageToModal('All inputs are required');
             return;
     }
-    
+
     const apiData = {
         pName: parentName,
         child: {

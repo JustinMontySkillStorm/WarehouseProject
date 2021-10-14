@@ -133,9 +133,12 @@ const updateItem = async (e) =>{
 
     const apiFeedback = await serverResponse.json();
     console.log(apiFeedback);
-
-    form.reset();
-    location.reload();
+    if(apiFeedback.status === 404) {
+        addErrorMessageToModal(apiFeedback.message);
+    } else {
+        form.reset();
+        location.reload();
+    }
 }
 
 const removeAll = async () => {

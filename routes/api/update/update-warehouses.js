@@ -28,8 +28,9 @@ router.put('/api/warehouse/updateInventory/:location/:itemName', async(req,res)=
         const inventoryObj = updatedInventory(warehouse, req.params.itemName);
 
         console.log(warehouse.inventory);
+        console.log(inventoryObj.itemToUpdate);
 
-        if(!inventoryObj.itemToUpdate) {
+        if(inventoryObj.itemToUpdate === undefined) {
              res.status(404).json({status: 404, message: `Cannot find ${req.params.itemName} in the warehouse located in ${warehouse.locationStr}`})
              return;
         }

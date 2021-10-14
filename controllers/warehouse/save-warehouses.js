@@ -40,7 +40,7 @@ const addWarehouse = async ({ owner, warehouse: {locationStr: location, maxFloor
     } catch(err) {
         console.log("error properties", err.errors);
         mongoose.disconnect();
-        return {status: 500, message: `Could not add warehouse to our database because of an error.`};
+        return {status: 500, message: `Could not add warehouse to our database because of an error. Make sure floor space field is filled out`};
     }
 } 
 

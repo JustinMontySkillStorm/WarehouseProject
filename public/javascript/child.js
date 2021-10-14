@@ -72,7 +72,12 @@ const handleAddStorage = async (e) => {
     const owner = params.get('corg');
     const value = Object.fromEntries(data.entries());
 
-    // console.log(owner, value);
+    console.log(value);
+
+    if(!value.floorSpace && !value.locationStr) {
+        addErrorMessageToModal('These inputs are required');
+        return; 
+    }
 
     const apiData = {
         owner: owner,
@@ -86,10 +91,22 @@ const handleAddStorage = async (e) => {
     })
 
     const apiFeedback = await response.json();
-    console.log(apiFeedback);
+    
+    if(apiFeedback.status === 500) {
+        addErrorMessageToModal(apiFeedback.message);
+        return;
+    } else {
+        form.reset();
+        location.reload();
+    }
+}
 
-    form.reset();
-    location.reload();
+const addErrorMessageToModal = (errMsg) => {
+    const errModalBody = document.querySelector('#error-message');
+    errModalBody.innerHTML = `<p>${errMsg}</p>`;
+        
+    const errModal = new bootstrap.Modal(document.querySelector('#error-modal'));
+    errModal.show();
 }
 
 const addStorage = document.getElementById('add-storage');
