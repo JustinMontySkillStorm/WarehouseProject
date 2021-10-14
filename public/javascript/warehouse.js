@@ -1,13 +1,9 @@
-console.log('working');
 const params = new URLSearchParams(window.location.search);
-
-console.log(params.get('location'));
-// console.log(params.get('owner'));
-
 
 const displayItems = async () => {
     const specificWarehouse = await fetch(`/${params.get('location')}/inventory`);
     const jsonData = await specificWarehouse.json();
+    console.log(jsonData);
 
     const {inventory} = jsonData;
 
@@ -15,6 +11,10 @@ const displayItems = async () => {
     const rootDiv = document.querySelector('#root-node');
     const h2 = document.createElement('h2');
     h2.innerHTML = `${params.get('location')} warehouse`;
+
+    const h5 = document.createElement('h5');
+    h5.innerHTML = `Max Floorspace: ${jsonData.maxFloorSpace}`;
+    h5.classList.add('text-muted');
 
     const tableBody = document.querySelector('#table-body');
 
@@ -48,6 +48,7 @@ const displayItems = async () => {
         tableBody.appendChild(itemRow);
     })
     rootDiv.appendChild(h2);
+    rootDiv.appendChild(h5);
 }
 
 const deleteItem = async (e) => {
@@ -65,10 +66,12 @@ const deleteItem = async (e) => {
     e.target.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode.parentNode.parentNode);
 }
 
-// add an item to our database.
+/**
+ * 
+ * @param {*} e event thats passed in from our HTML elements
+ */
 const addItem = async (e) => {
     e.preventDefault();
-    console.log('hitting this');
 
     const form = document.querySelector('#inventory-form');
     const data = new FormData(form);
@@ -77,8 +80,6 @@ const addItem = async (e) => {
     value = Object.fromEntries(data.entries());
     value.locationStr = locationStr;
 
-    console.log(JSON.stringify(value));
-
     const response = await fetch('/api/inventory', {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
@@ -86,10 +87,21 @@ const addItem = async (e) => {
     })
 
     const apiFeedback = await response.json();
-    console.log(apiFeedback);
 
-    form.reset();
-    location.reload();
+    if(apiFeedback.status === 500) {
+        console.log('hitting this');
+        // grab the modal I have and show it to user with the error message
+        const errModalBody = document.querySelector('#error-message');
+        errModalBody.innerHTML = `<p>${apiFeedback.message}</p>`;
+        
+        const errModal = new bootstrap.Modal(document.querySelector('#error-modal'));
+        errModal.show();
+    } else {
+        form.reset();
+        location.reload();
+    }
+
+    
 }
 
 const updateItem = async (e) =>{
@@ -130,6 +142,10 @@ postItem.addEventListener('click', addItem);
 const updateBtn = document.querySelector('#update-item');
 updateBtn.addEventListener('click', updateItem);
 
+document.addEventListener('DOMContentLoaded', async ()=> {
+    await displayItems();
+})
+
 /**
  * Data needs to be sent in this shape to the backend
  * 
@@ -142,6 +158,3 @@ updateBtn.addEventListener('click', updateItem);
  * }
  */
 
-document.addEventListener('DOMContentLoaded', async ()=> {
-    await displayItems();
-})

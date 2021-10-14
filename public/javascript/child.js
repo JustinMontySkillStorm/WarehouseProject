@@ -16,7 +16,7 @@ const getChildWarehouses = async () => {
     mainDiv.appendChild(currentlyViewing);
     mainDiv.appendChild(businessSector);
 
-    const {storage} = wholeChild 
+    const {storage} = wholeChild;
 
     const warehouseDiv = document.getElementById('root-node');
 

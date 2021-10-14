@@ -63,7 +63,7 @@ const addInventory = async ({locationStr: location, itemName: item, briefDescrip
         return {status: 201, message: `Successfully added ${item} into the warehouse located in ${location}`};
     } catch(err) {
         mongoDB.disconnect();
-        throw {status: 500, message: `Could not add your item because it would exceed maxFloorSpace avaiable in warehouse`};
+        throw {status: 500, message: `Could not add your item because it would exceed max space available in this warehouse`};
     }
 }
 

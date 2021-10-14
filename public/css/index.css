@@ -25,6 +25,10 @@ label, input {
     background-color:#8338ec;
 }
 
+.page-end{
+    background-color: #252422;
+}
+
 #form-holder{
     display: flex;
     justify-content: center;
